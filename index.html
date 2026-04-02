@@ -70,13 +70,22 @@
                 </li>
               </ul>
             </div>
-            <div class="saas-navbar-cta d-flex align-items-center flex-shrink-0">
+            <div class="saas-navbar-cta d-flex align-items-center gap-2 flex-shrink-0">
               <button
                 type="button"
                 class="btn btn-primary btn-saas-primary btn-sm px-3 px-sm-4 text-nowrap"
                 id="btn-nav-upload"
               >
                 Get Started
+              </button>
+              <button
+                type="button"
+                class="btn btn-saas-theme btn-sm rounded-pill flex-shrink-0"
+                id="btn-theme-toggle"
+                aria-label="Toggle dark mode"
+                title="Theme"
+              >
+                <i class="bi bi-moon-stars" id="theme-icon" aria-hidden="true"></i>
               </button>
             </div>
           </nav>
@@ -621,20 +630,9 @@
               <span class="fw-semibold">ClearCut</span>
               <span class="text-body-secondary small d-none d-sm-inline">· On-device background removal</span>
             </div>
-            <div class="d-flex align-items-center gap-3 flex-wrap justify-content-center justify-content-md-end">
-              <button
-                type="button"
-                class="btn btn-saas-theme btn-sm rounded-pill"
-                id="btn-theme-toggle"
-                aria-label="Toggle dark mode"
-                title="Theme"
-              >
-                <i class="bi bi-moon-stars" id="theme-icon" aria-hidden="true"></i>
-              </button>
-              <p class="small text-body-secondary mb-0 text-center text-md-end">
-                Built with Bootstrap 5 · Images never leave your device
-              </p>
-            </div>
+            <p class="small text-body-secondary mb-0 text-center text-md-end">
+              Built with Bootstrap 5 · Images never leave your device
+            </p>
           </div>
         </div>
       </div>
