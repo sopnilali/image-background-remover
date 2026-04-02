@@ -28,6 +28,16 @@
   --bs-body-font-family: var(--font-saas);
   --bs-border-radius: 0.75rem;
   --bs-border-radius-lg: 1rem;
+  --bs-btn-border-radius: 0.65rem;
+  --bs-btn-font-weight: 600;
+  --btn-focus-ring-color: color-mix(in srgb, var(--bs-primary) 38%, transparent);
+  --btn-focus-ring: 0 0 0 3px var(--btn-focus-ring-color);
+}
+
+@supports not (color: color-mix(in srgb, white, black)) {
+  :root {
+    --btn-focus-ring: 0 0 0 3px rgba(79, 70, 229, 0.35);
+  }
 }
 
 [data-bs-theme='dark'] {
@@ -45,6 +55,7 @@
   --bs-primary-rgb: 129, 140, 248;
   --bs-link-color: #a5b4fc;
   --bs-link-hover-color: #c7d2fe;
+  --btn-focus-ring-color: color-mix(in srgb, var(--bs-primary) 42%, transparent);
 }
 
 html { scroll-behavior: smooth; }
@@ -111,93 +122,119 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-/* —— Buttons (modern SaaS) —— */
+/* --- Buttons (app-wide polish) --- */
 .app-body .btn {
-  font-family: var(--font-saas);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
-  border-radius: var(--app-radius-sm);
+  letter-spacing: -0.01em;
   transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast),
+    background-color var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
-    filter var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
     opacity var(--transition-fast);
 }
 
 .app-body .btn:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--bs-primary) 50%, transparent);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--btn-focus-ring);
 }
 
-[data-bs-theme='dark'] .app-body .btn:focus-visible {
-  outline-color: color-mix(in srgb, var(--bs-primary) 70%, transparent);
+.app-body .btn-saas-primary:focus-visible,
+.app-body .btn-saas-ghost:focus-visible,
+.app-body .btn-saas-theme:focus-visible {
+  box-shadow: var(--btn-focus-ring), var(--saas-btn-extra-shadow, 0 0 transparent);
 }
 
 .btn-saas-primary.btn-primary {
-  background: var(--brand-gradient) !important;
-  color: #fff !important;
-  border: none !important;
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: color-mix(in srgb, var(--bs-primary) 78%, #1e1b4b);
+  background-color: transparent;
   font-weight: 600;
+  letter-spacing: -0.012em;
+  border: 1px solid color-mix(in srgb, var(--bs-primary) 78%, #1e1b4b);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, #fff 14%, var(--bs-primary)) 0%,
+    var(--bs-primary) 46%,
+    color-mix(in srgb, #000 14%, var(--bs-primary)) 100%
+  );
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.2) inset,
-    0 2px 4px rgba(67, 56, 202, 0.2),
-    0 8px 24px rgba(79, 70, 229, 0.35);
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 2px 6px rgba(var(--bs-primary-rgb), 0.28),
+    0 8px 24px rgba(var(--bs-primary-rgb), 0.22);
+  --saas-btn-extra-shadow: 0 2px 6px rgba(var(--bs-primary-rgb), 0.28), 0 8px 24px rgba(var(--bs-primary-rgb), 0.22);
+}
+
+[data-bs-theme='dark'] .btn-saas-primary.btn-primary {
+  border-color: color-mix(in srgb, var(--bs-primary) 55%, #312e81);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, #fff 10%, var(--bs-primary)) 0%,
+    var(--bs-primary) 48%,
+    color-mix(in srgb, #0f172a 35%, var(--bs-primary)) 100%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 2px 8px rgba(var(--bs-primary-rgb), 0.35),
+    0 12px 28px rgba(0, 0, 0, 0.35);
+  --saas-btn-extra-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .btn-saas-primary:hover:not(:disabled) {
-  transform: translateY(-1.5px);
+  transform: translateY(-1px);
+  filter: brightness(1.04) saturate(1.02);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.22) inset,
-    0 4px 12px rgba(67, 56, 202, 0.25),
-    0 14px 32px rgba(79, 70, 229, 0.42);
-  filter: brightness(1.05) saturate(1.02);
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 4px 14px rgba(var(--bs-primary-rgb), 0.38),
+    0 14px 36px rgba(var(--bs-primary-rgb), 0.28);
 }
 
 .btn-saas-primary:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.12) inset,
-    0 2px 8px rgba(79, 70, 229, 0.3);
   filter: brightness(0.98);
+  box-shadow:
+    0 2px 4px rgba(var(--bs-primary-rgb), 0.25) inset,
+    0 4px 12px rgba(var(--bs-primary-rgb), 0.22);
 }
 
 .btn-saas-primary:disabled,
-.btn-saas-primary.btn-primary:disabled {
-  opacity: 0.52 !important;
-  transform: none !important;
-  filter: grayscale(0.08);
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.15);
+.btn-saas-primary.disabled {
+  opacity: 0.58;
+  transform: none;
+  filter: none;
+  box-shadow: none;
 }
 
 .btn-saas-ghost {
   font-weight: 600;
-  color: var(--bs-emphasis-color);
-  background: color-mix(in srgb, var(--saas-surface) 45%, transparent);
-  border: 1px solid var(--app-border-strong) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  letter-spacing: -0.01em;
+  color: var(--bs-body-color);
+  background: color-mix(in srgb, var(--saas-surface) 55%, transparent);
+  border: 1px solid var(--app-border-strong);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --saas-btn-extra-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+[data-bs-theme='dark'] .btn-saas-ghost {
+  background: color-mix(in srgb, var(--saas-surface) 40%, transparent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --saas-btn-extra-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .btn-saas-ghost:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--bs-primary) 10%, var(--saas-surface)) !important;
-  border-color: color-mix(in srgb, var(--bs-primary) 32%, transparent) !important;
-  color: var(--bs-emphasis-color);
+  background: color-mix(in srgb, var(--bs-primary) 10%, var(--saas-surface));
+  border-color: color-mix(in srgb, var(--bs-primary) 32%, var(--app-border-strong));
+  color: var(--bs-body-color);
   box-shadow: 0 4px 14px color-mix(in srgb, var(--bs-primary) 12%, transparent);
-  transform: translateY(-1px);
+  --saas-btn-extra-shadow: 0 4px 14px color-mix(in srgb, var(--bs-primary) 12%, transparent);
 }
 
 .btn-saas-ghost:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.99);
 }
 
 .btn-saas-ghost:disabled {
   opacity: 0.45;
-  transform: none !important;
   box-shadow: none;
 }
 
@@ -208,32 +245,51 @@ html { scroll-behavior: smooth; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--app-border-strong) !important;
-  background: color-mix(in srgb, var(--saas-surface) 55%, transparent) !important;
-  color: var(--bs-emphasis-color) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--app-border-strong);
+  background: color-mix(in srgb, var(--saas-surface) 72%, transparent);
+  color: var(--bs-body-color);
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --saas-btn-extra-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
 }
 
-.btn-saas-theme:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--bs-primary) 12%, var(--saas-surface)) !important;
-  border-color: color-mix(in srgb, var(--bs-primary) 35%, transparent) !important;
-  color: var(--bs-primary) !important;
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--bs-primary) 15%, transparent);
+[data-bs-theme='dark'] .btn-saas-theme {
+  background: color-mix(in srgb, var(--saas-surface) 50%, transparent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  --saas-btn-extra-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-saas-theme:hover {
+  background: color-mix(in srgb, var(--bs-primary) 14%, var(--saas-surface));
+  border-color: color-mix(in srgb, var(--bs-primary) 35%, var(--app-border-strong));
   transform: translateY(-1px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--bs-primary) 15%, transparent);
+  --saas-btn-extra-shadow: 0 6px 18px color-mix(in srgb, var(--bs-primary) 15%, transparent);
 }
 
-.btn-saas-theme:active:not(:disabled) {
+.btn-saas-theme:active {
   transform: translateY(0);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .btn-saas-primary:hover:not(:disabled),
-  .btn-saas-ghost:hover:not(:disabled),
-  .btn-saas-theme:hover:not(:disabled) {
-    transform: none;
-  }
+.navbar-saas .navbar-toggler {
+  border-radius: var(--bs-btn-border-radius);
+  border: 1px solid var(--app-border-strong);
+  padding: 0.45rem 0.6rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.navbar-saas .navbar-toggler:focus-visible {
+  box-shadow: var(--btn-focus-ring);
+}
+
+[data-bs-theme='dark'] .navbar-saas .navbar-toggler {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+}
+
+.app-body a.btn,
+.app-body a.btn:hover,
+.app-body a.btn:focus {
+  text-decoration: none;
 }
 
 
@@ -361,10 +417,15 @@ html { scroll-behavior: smooth; }
 }
 
 .btn-saas-hero-cta {
-  font-weight: 700;
-  padding-top: 0.7rem !important;
-  padding-bottom: 0.7rem !important;
-  border-radius: var(--app-radius-sm) !important;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  padding-top: 0.65rem !important;
+  padding-bottom: 0.65rem !important;
+}
+
+.saas-hero-secondary {
+  border-radius: var(--bs-btn-border-radius);
+  font-weight: 600;
 }
 
 @media (min-width: 576px) {
@@ -372,12 +433,9 @@ html { scroll-behavior: smooth; }
     border: none !important;
     background: transparent !important;
     box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
   }
   .saas-hero-secondary:hover {
-    background: color-mix(in srgb, var(--bs-primary) 10%, transparent) !important;
-    transform: translateY(-1px);
+    background: color-mix(in srgb, var(--bs-primary) 8%, transparent) !important;
   }
 }
 
@@ -547,6 +605,40 @@ html { scroll-behavior: smooth; }
 
 .saas-section-title { letter-spacing: -0.02em; }
 .saas-section-lead { max-width: 40rem; }
+.saas-upload-instructions {
+  line-height: 1.65;
+  color: var(--bs-emphasis-color);
+}
+.kbd-saas {
+  display: inline-block;
+  font-family: var(--bs-font-monospace), ui-monospace, monospace;
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 0.12em 0.45em;
+  margin: 0 0.05em;
+  vertical-align: baseline;
+  color: var(--bs-emphasis-color);
+  background: var(--bs-tertiary-bg);
+  border: 1px solid var(--app-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 0.35rem;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
+}
+[data-bs-theme='dark'] .kbd-saas {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  border-color: var(--app-border-strong);
+}
+.drop-zone-hint-multiselect {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.55;
+  color: var(--bs-body-color);
+}
+.drop-zone .drop-zone-hint-multiselect strong {
+  color: var(--bs-emphasis-color);
+}
 .saas-label {
   font-weight: 600;
   font-size: 0.6875rem;
@@ -697,26 +789,6 @@ html { scroll-behavior: smooth; }
   pointer-events: none;
   z-index: 1;
   border-radius: 1px;
-}
-
-/* Home landing (marketing) */
-.home-landing .navbar-nav .nav-link {
-  color: var(--bs-emphasis-color);
-  border-radius: var(--app-radius-sm);
-}
-.home-landing .navbar-nav .nav-link:hover {
-  color: var(--bs-primary);
-  background: color-mix(in srgb, var(--bs-primary) 6%, transparent);
-}
-
-.saas-home-feature-icon {
-  width: 3rem;
-  height: 3rem;
-  background: color-mix(in srgb, var(--bs-primary) 12%, transparent);
-}
-
-.saas-home-kicker {
-  letter-spacing: 0.1em;
 }
 
 .app-footer {
@@ -1247,16 +1319,16 @@ html { scroll-behavior: smooth; }
 
 .saas-segmented.btn-group {
   padding: 0.3rem;
-  background: color-mix(in srgb, var(--bs-tertiary-bg) 92%, var(--bs-primary));
-  border-radius: calc(var(--app-radius-sm) + 2px);
+  background: color-mix(in srgb, var(--bs-tertiary-bg) 92%, var(--saas-surface));
+  border-radius: 0.85rem;
   border: 1px solid var(--app-border);
-  gap: 0.3rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 1px 8px rgba(15, 23, 42, 0.04);
+  gap: 0.2rem;
   flex-wrap: wrap;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
 }
 
 [data-bs-theme='dark'] .saas-segmented.btn-group {
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 2px 12px rgba(0, 0, 0, 0.22);
 }
 
 .saas-segmented .btn {
@@ -1265,62 +1337,54 @@ html { scroll-behavior: smooth; }
   border-radius: 0.55rem !important;
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   border: none !important;
   color: var(--bs-body-color);
-  padding: 0.48rem 0.75rem;
-  transition:
-    background var(--transition-fast),
-    color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+  padding: 0.5rem 0.75rem;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .saas-segmented .btn:hover {
-  background: color-mix(in srgb, var(--saas-surface) 88%, transparent);
+  background: color-mix(in srgb, var(--saas-surface) 88%, var(--bs-secondary-color));
+}
+
+.saas-segmented .btn-check:focus-visible + .btn {
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--btn-focus-ring);
 }
 
 .saas-segmented .btn-check:checked + .btn-outline-secondary {
   background: var(--saas-surface) !important;
   color: var(--bs-primary) !important;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.5) inset,
-    0 2px 8px rgba(79, 70, 229, 0.12),
-    0 0 0 1px color-mix(in srgb, var(--bs-primary) 18%, transparent);
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 0 0 1px color-mix(in srgb, var(--bs-primary) 22%, transparent);
 }
 
 .saas-segmented .btn-check:checked + .btn-outline-danger {
-  background: color-mix(in srgb, var(--bs-danger) 10%, var(--saas-surface)) !important;
+  background: color-mix(in srgb, var(--bs-danger) 12%, var(--saas-surface)) !important;
   color: var(--bs-danger) !important;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.25) inset,
-    0 2px 8px color-mix(in srgb, var(--bs-danger) 15%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--bs-danger) 22%, transparent);
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px color-mix(in srgb, var(--bs-danger) 28%, transparent);
 }
 
 .saas-segmented .btn-check:checked + .btn-outline-success {
-  background: color-mix(in srgb, var(--bs-success) 10%, var(--saas-surface)) !important;
+  background: color-mix(in srgb, var(--bs-success) 12%, var(--saas-surface)) !important;
   color: var(--bs-success) !important;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.25) inset,
-    0 2px 8px color-mix(in srgb, var(--bs-success) 15%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--bs-success) 22%, transparent);
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 0 0 1px color-mix(in srgb, var(--bs-success) 28%, transparent);
 }
 
 [data-bs-theme='dark'] .saas-segmented .btn-check:checked + .btn-outline-secondary {
   background: var(--saas-surface) !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 2px 10px rgba(0, 0, 0, 0.35),
-    0 0 0 1px color-mix(in srgb, var(--bs-primary) 25%, transparent);
-}
-
-[data-bs-theme='dark'] .saas-segmented .btn-check:checked + .btn-outline-danger,
-[data-bs-theme='dark'] .saas-segmented .btn-check:checked + .btn-outline-success {
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.05) inset,
-    0 2px 10px rgba(0, 0, 0, 0.3),
-    0 0 0 1px color-mix(in srgb, currentColor 25%, transparent);
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    0 0 0 1px color-mix(in srgb, var(--bs-primary) 28%, transparent);
 }
 
 .saas-color-input {

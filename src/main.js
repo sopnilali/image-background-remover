@@ -171,16 +171,6 @@ async function loadBlobIntoForeground(blob) {
   state.setInitialAlpha(alpha)
 }
 
-/** Brush mode from UI so painting matches Erase / Restore radios (DOM is source of truth while brushing). */
-function getBrushModeFromUi() {
-  const restore = document.getElementById('brush-restore')
-  return restore instanceof HTMLInputElement && restore.checked ? 'restore' : 'erase'
-}
-
-function syncBrushModeFromRadios() {
-  state.setBrushMode(getBrushModeFromUi())
-}
-
 function attachBrushIfNeeded() {
   if (detachBrush) detachBrush()
   detachBrush = null
@@ -193,10 +183,9 @@ function attachBrushIfNeeded() {
     fc,
     ia,
     redraw,
-    getBrushModeFromUi,
+    () => state.brushMode,
     () => state.brushSize,
   )
-  syncBrushModeFromRadios()
 }
 
 /**
@@ -416,12 +405,13 @@ function wireBackgroundControls() {
 }
 
 function wireBrushControls() {
-  const onBrushModeRadio = () => syncBrushModeFromRadios()
-  ;['brush-erase', 'brush-restore'].forEach((id) => {
-    const el = document.getElementById(id)
-    if (!el) return
-    el.addEventListener('change', onBrushModeRadio)
-    el.addEventListener('input', onBrushModeRadio)
+  ;['erase', 'restore'].forEach((mode) => {
+    const el = document.getElementById(mode === 'erase' ? 'brush-erase' : 'brush-restore')
+    el?.addEventListener('change', () => {
+      if ((/** @type {HTMLInputElement} */ (el)).checked) {
+        state.setBrushMode(/** @type {'erase' | 'restore'} */ (mode))
+      }
+    })
   })
 
   els.brushSize?.addEventListener('input', () => {
@@ -484,4 +474,8 @@ wireStudioAnchorFocus()
 wireCompare()
 wirePreloadProgress()
 
-// Logo links home (see background-remover/index.html); Upload button opens the file picker.
+// Navbar brand: focus file input
+document.querySelector('.navbar-brand')?.addEventListener('click', (e) => {
+  e.preventDefault()
+  els.fileInput?.click()
+})
