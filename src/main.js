@@ -7,10 +7,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import '../css/styles.css'
 
+import { Collapse } from 'bootstrap'
+
 import * as state from './js/state.js'
 import { initTheme } from './js/ui/theme.js'
 import { showToast } from './js/ui/toast.js'
-import { removeImageBackground, startPreload } from './js/removeBg.js'
+import { removeImageBackground } from './js/removeBg.js'
 import { redrawComposite } from './js/composite.js'
 import { initCompareSlider } from './js/compareSlider.js'
 import { attachBrushEditor } from './js/brushEditor.js'
@@ -33,9 +35,9 @@ const els = {
   batchProgressBar: /** @type {HTMLDivElement} */ (document.getElementById('batch-progress-bar')),
   thumbnailStrip: /** @type {HTMLElement} */ (document.getElementById('thumbnail-strip')),
   processingPanel: document.getElementById('processing-panel'),
-  processingSpinner: document.getElementById('processing-spinner'),
   processingLabel: document.getElementById('processing-label'),
   processingProgress: /** @type {HTMLDivElement} */ (document.getElementById('processing-progress')),
+  processingPct: document.getElementById('processing-pct'),
   processingSub: document.getElementById('processing-sub'),
   resultPanel: document.getElementById('result-panel'),
   imgOriginal: /** @type {HTMLImageElement} */ (document.getElementById('img-original')),
@@ -59,6 +61,24 @@ let fileInputPurpose = 'replace'
 function setProcessing(visible, busy = false) {
   els.processingPanel?.classList.toggle('d-none', !visible)
   els.processingPanel?.setAttribute('aria-busy', busy ? 'true' : 'false')
+}
+
+/**
+ * @param {number} pct 0–100
+ * Also syncs the batch toolbar bar so single-image runs aren’t stuck at 0% until the end.
+ */
+function setMainProcessingPct(pct) {
+  const raw = Number(pct)
+  const n = Math.max(0, Math.min(100, Math.round(Number.isFinite(raw) ? raw : 0)))
+  if (els.processingProgress) {
+    els.processingProgress.style.width = `${n}%`
+    els.processingProgress.setAttribute('aria-valuenow', String(n))
+  }
+  if (els.processingPct) els.processingPct.textContent = `${n}%`
+  if (els.batchProgressBar) {
+    els.batchProgressBar.style.width = `${n}%`
+    els.batchProgressBar.setAttribute('aria-valuenow', String(n))
+  }
 }
 
 function setNavDownloadEnabled(on) {
@@ -215,10 +235,8 @@ function updateBatchUi() {
     const col = document.createElement('div')
     col.className = 'col-6 col-sm-4 col-md-3 col-lg-2'
     const card = document.createElement('div')
-    card.className =
-      'thumb-card card border-0 shadow-sm overflow-hidden h-100' +
-      (index === state.currentIndex ? ' active' : '')
-    card.innerHTML = `<img src="${item.originalUrl}" class="w-100" alt="" />`
+    card.className = 'thumb-card' + (index === state.currentIndex ? ' active' : '')
+    card.innerHTML = `<div class="thumb-card-preview bg-checker"><img src="${item.originalUrl}" class="thumb-card-img" alt="" loading="lazy" decoding="async" /></div>`
     card.addEventListener('click', async () => {
       state.setCurrentIndex(index)
       document.querySelectorAll('.thumb-card').forEach((c) => c.classList.remove('active'))
@@ -258,42 +276,70 @@ async function processFiles(files, opts = {}) {
     }
   }
 
-  startPreload()
-  if (els.batchProgressBar) {
-    els.batchProgressBar.style.width = '0%'
-    els.batchProgressBar.setAttribute('aria-valuenow', '0')
-  }
   setProcessing(true, true)
   els.processingLabel &&
     (els.processingLabel.textContent = append
       ? `Adding ${items.length} image${items.length === 1 ? '' : 's'}…`
       : 'Removing backgrounds…')
   els.processingSub && (els.processingSub.textContent = 'Loading AI models on first run may take a minute.')
-  els.processingProgress && (els.processingProgress.style.width = '0%')
 
-  let lastKey = ''
+  const nBatch = items.length
+  /** Library reports fetch then compute with overlapping 0..1 scales; keep bar monotonic and phase-aware. */
+  let progressPeak = 0
+  const bumpProcessingProgress = (raw) => {
+    const r = Math.max(0, Math.min(100, Number.isFinite(Number(raw)) ? Number(raw) : 0))
+    progressPeak = Math.max(progressPeak, r)
+    setMainProcessingPct(progressPeak)
+  }
+  /** Map (key, current, total) to 0–100 for this batch item (each file owns an equal slice of the bar). */
+  const libProgressToOverallPct = (key, current, total, index) => {
+    const k = String(key)
+    const t = Number(total) || 0
+    const c = Number(current) || 0
+    const slice = 100 / nBatch
+    const base = index * slice
+    const fetchWeight = 0.9
+    const computeWeight = 1 - fetchWeight
+    const isFetch = k.startsWith('fetch:')
+    const isCompute = k.startsWith('compute:')
+    if (t > 0 && isFetch) {
+      return base + (c / t) * slice * fetchWeight
+    }
+    if (t > 0 && isCompute) {
+      return base + slice * fetchWeight + (c / t) * slice * computeWeight
+    }
+    const intra = t > 0 ? Math.min(1, c / t) : c > 0 ? Math.min(1, c / 100) : 0
+    return base + intra * slice
+  }
+
+  bumpProcessingProgress(0)
+
   try {
     await runSequential(
       items,
-      async (item) => {
-        els.processingLabel && (els.processingLabel.textContent = `Processing ${item.name}…`)
+      async (item, index) => {
+        els.processingLabel &&
+          (els.processingLabel.textContent =
+            nBatch > 1 ? `Processing ${index + 1}/${nBatch}: ${item.name}…` : `Processing ${item.name}…`)
         const blob = await removeImageBackground(item.file, (key, current, total) => {
-          lastKey = key
-          const pct = total > 0 ? Math.round((current / total) * 100) : 0
-          els.processingProgress && (els.processingProgress.style.width = `${pct}%`)
-          els.processingSub &&
-            (els.processingSub.textContent = `${key}: ${current} / ${total}`)
+          const t = Number(total) || 0
+          const c = Number(current) || 0
+          const raw = libProgressToOverallPct(key, current, total, index)
+          bumpProcessingProgress(raw)
+          if (els.processingSub) {
+            const step = t > 0 ? `${key}: ${c} / ${t}` : `${key}${c ? ` (${c})` : ''}`
+            els.processingSub.textContent =
+              nBatch > 1 ? `Image ${index + 1} of ${nBatch} · ${step}` : step
+          }
         })
         item.processedBlob = blob
       },
       (done, total) => {
-        const batchPct = Math.round((done / total) * 100)
-        if (els.batchProgressBar) {
-          els.batchProgressBar.style.width = `${batchPct}%`
-          els.batchProgressBar.setAttribute('aria-valuenow', String(batchPct))
-        }
+        const batchPct = (done / total) * 100
+        bumpProcessingProgress(batchPct)
       },
     )
+    bumpProcessingProgress(100)
   } catch (e) {
     console.error(e)
     showToast(
@@ -455,13 +501,16 @@ function wireCompare() {
   initCompareSlider(els.compareRange, els.compareBeforeClip, wrap)
 }
 
-function wirePreloadProgress() {
-  window.addEventListener('bg-remove-preload', (e) => {
-    const ev = /** @type {CustomEvent} */ (e)
-    const { key, current, total } = ev.detail || {}
-    if (els.processingSub && total) {
-      els.processingSub.textContent = `Preparing models: ${key} (${current}/${total})`
-    }
+/** Collapse mobile nav after in-page anchor taps. */
+function wireNavHashLinks() {
+  const navMain = document.getElementById('navbarMain')
+  if (!navMain) return
+  const mq = window.matchMedia('(max-width: 991.98px)')
+  navMain.querySelectorAll('.saas-nav-menu .nav-link[href^="#"]').forEach((a) => {
+    a.addEventListener('click', () => {
+      if (!mq.matches) return
+      Collapse.getOrCreateInstance(navMain, { toggle: false }).hide()
+    })
   })
 }
 
@@ -472,10 +521,4 @@ wireBrushControls()
 wireExport()
 wireStudioAnchorFocus()
 wireCompare()
-wirePreloadProgress()
-
-// Navbar brand: focus file input
-document.querySelector('.navbar-brand')?.addEventListener('click', (e) => {
-  e.preventDefault()
-  els.fileInput?.click()
-})
+wireNavHashLinks()

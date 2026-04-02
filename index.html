@@ -21,60 +21,71 @@
       >Skip to content</a
     >
 
-    <header class="app-header">
-      <nav class="navbar navbar-expand-lg navbar-app navbar-saas py-3">
-        <div class="container">
-          <a class="navbar-brand navbar-brand-saas d-flex align-items-center gap-2 fw-semibold" href="#">
-            <span class="brand-mark rounded-3" aria-hidden="true"></span>
-            <span class="brand-text">ClearCut</span>
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarMain"
-            aria-controls="navbarMain"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+    <header class="app-header saas-app-header">
+      <div class="container saas-header-container">
+        <div class="saas-navbar-shell">
+          <nav
+            class="navbar navbar-expand-lg navbar-app navbar-saas saas-navbar saas-navbar-grid w-100"
+            aria-label="Primary"
           >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-              <li class="nav-item">
-                <button type="button" class="btn btn-primary btn-saas-primary btn-sm px-3" id="btn-nav-upload">
-                  <i class="bi bi-cloud-upload me-1" aria-hidden="true"></i> Upload
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="btn btn-saas-ghost btn-sm px-3"
-                  id="btn-nav-download"
-                  disabled
-                >
-                  <i class="bi bi-download me-1" aria-hidden="true"></i> Download
-                </button>
-              </li>
-              <li class="nav-item pt-2 pt-lg-0">
-                <button
-                  type="button"
-                  class="btn btn-saas-theme btn-sm rounded-pill"
-                  id="btn-theme-toggle"
-                  aria-label="Toggle dark mode"
-                  title="Dark mode"
-                >
-                  <i class="bi bi-moon-stars" id="theme-icon" aria-hidden="true"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
+            <a
+              class="navbar-brand navbar-brand-saas saas-navbar-brand d-flex align-items-center gap-2 gap-sm-3 fw-semibold"
+              href="/"
+            >
+              <span class="brand-mark rounded-3" aria-hidden="true"></span>
+              <span class="navbar-brand-copy">
+                <span class="brand-text">ClearCut</span>
+                <span class="brand-tagline">100% local · Private</span>
+              </span>
+            </a>
+            <button
+              class="navbar-toggler saas-navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarMain"
+              aria-controls="navbarMain"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div
+              class="collapse navbar-collapse saas-navbar-collapse justify-content-lg-center"
+              id="navbarMain"
+            >
+              <ul
+                class="navbar-nav saas-nav-menu flex-lg-row align-items-lg-center justify-content-center py-2 py-lg-0 mb-0 mx-lg-auto"
+              >
+                <li class="nav-item">
+                  <a class="nav-link text-center text-lg-start" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center text-lg-start" href="#">Upload</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center text-lg-start" href="#">Studio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center text-lg-start" href="#">About</a>
+                </li>
+              </ul>
+            </div>
+            <div class="saas-navbar-cta d-flex align-items-center flex-shrink-0">
+              <button
+                type="button"
+                class="btn btn-primary btn-saas-primary btn-sm px-3 px-sm-4 text-nowrap"
+                id="btn-nav-upload"
+              >
+                Get Started
+              </button>
+            </div>
+          </nav>
         </div>
-      </nav>
+      </div>
     </header>
 
     <main id="main-content" class="container py-4 py-md-5 pb-5 app-main">
-      <section class="saas-hero-section mb-4 mb-lg-5" aria-labelledby="hero-heading">
+      <section class="saas-hero-section mb-4 mb-lg-5" aria-labelledby="overview">
         <div class="saas-hero-card">
           <div class="row g-4 g-xl-5 align-items-center">
             <div class="col-xl-7">
@@ -82,7 +93,7 @@
                 <span class="saas-hero-eyebrow-dot" aria-hidden="true"></span>
                 <span>100% local · Zero upload</span>
               </p>
-              <h1 id="hero-heading" class="saas-hero-title">
+              <h1 id="overview" class="saas-hero-title">
                 Background removal,
                 <span class="saas-hero-title-accent">built for professionals.</span>
               </h1>
@@ -98,7 +109,7 @@
                 >
                   <i class="bi bi-cloud-arrow-up me-2" aria-hidden="true"></i> Upload images
                 </button>
-                <a class="btn btn-saas-ghost saas-hero-secondary" href="#upload-heading">
+                <a class="btn btn-saas-ghost saas-hero-secondary" href="#upload">
                   <i class="bi bi-arrow-down-circle me-1" aria-hidden="true"></i> Or scroll to upload
                 </a>
               </div>
@@ -142,7 +153,8 @@
       </section>
 
 
-      <section class="mb-4 saas-section" aria-labelledby="upload-heading">
+      <section class="mb-4 saas-section" aria-labelledby="upload">
+        <h2 id="upload" class="visually-hidden">Upload images</h2>
 
         <div
           class="drop-zone drop-zone-saas rounded-4 p-4 p-md-5 text-center mb-3"
@@ -174,11 +186,14 @@
           <span class="small text-body-secondary fw-medium" id="batch-count"></span>
           <button
             type="button"
-            class="btn btn-sm btn-saas-ghost"
+            class="btn btn-saas-add-batch"
             id="btn-add-to-batch"
             title="Keep current results and process more images"
           >
-            <i class="bi bi-plus-lg me-1" aria-hidden="true"></i> Add more
+            <span class="btn-saas-add-batch-icon" aria-hidden="true">
+              <i class="bi bi-plus-lg"></i>
+            </span>
+            <span class="btn-saas-add-batch-text">Add more</span>
           </button>
           <div class="progress flex-grow-1 batch-progress" style="min-width: 120px; height: 8px">
             <div
@@ -198,27 +213,47 @@
 
       <section
         id="processing-panel"
-        class="card saas-card saas-card-elevated border-0 mb-4 d-none"
+        class="card saas-card saas-card-elevated border-0 mb-4 d-none saas-processing-panel"
         aria-live="polite"
         aria-busy="false"
       >
-        <div class="card-body p-4">
-          <div class="d-flex align-items-center gap-3">
-            <div class="spinner-border text-primary" role="status" id="processing-spinner">
-              <span class="visually-hidden">Processing</span>
-            </div>
-            <div class="flex-grow-1">
-              <p class="mb-1 fw-medium" id="processing-label">Removing background…</p>
-              <div class="progress" style="height: 6px">
-                <div class="progress-bar" id="processing-progress" style="width: 0%"></div>
+        <div class="card-body p-4 p-md-4">
+          <div class="saas-processing-body">
+            <div class="saas-processing-preview-row">
+              <div class="saas-processing-preview-wrap" aria-hidden="true">
+                <div class="saas-processing-preview-canvas">
+                  <div class="saas-processing-rings-stack">
+                    <div class="saas-processing-rings" aria-hidden="true">
+                      <span class="saas-processing-ring saas-processing-ring--outer"></span>
+                      <span class="saas-processing-ring saas-processing-ring--inner"></span>
+                    </div>
+                    <span class="saas-processing-pct" id="processing-pct" aria-hidden="true">0%</span>
+                  </div>
+                </div>
               </div>
-              <p class="small text-body-secondary mb-0 mt-1" id="processing-sub"></p>
+            </div>
+            <div class="saas-processing-status">
+              <span class="visually-hidden">Processing; status updates below.</span>
+              <p class="saas-processing-eyebrow mb-2">Working</p>
+              <p class="mb-2 fw-semibold text-body" id="processing-label">Removing background…</p>
+              <div class="progress saas-processing-progress">
+                <div
+                  class="progress-bar saas-processing-progress-bar"
+                  id="processing-progress"
+                  role="progressbar"
+                  style="width: 0%"
+                  aria-valuenow="0"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <p class="small text-body-secondary mb-0 mt-2" id="processing-sub"></p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="result-panel" class="d-none saas-result" aria-labelledby="studio-heading">
+      <section id="result-panel" class="d-none saas-result" aria-labelledby="studio">
         <div class="saas-result-shell">
           <header class="saas-result-head">
             <div class="saas-result-head-copy">
@@ -226,7 +261,7 @@
                 <span class="saas-result-eyebrow-dot" aria-hidden="true"></span>
                 Workspace
               </p>
-              <h2 id="studio-heading" class="saas-result-title">
+              <h2 id="studio" class="saas-result-title">
                 <span class="saas-result-title-line">Studio</span>
                 <span class="saas-result-title-accent">output</span>
               </h2>
@@ -242,6 +277,14 @@
           </header>
 
           <div class="saas-result-workspace">
+          <div class="saas-workspace-rail" aria-hidden="true">
+            <div class="saas-workspace-rail-track">
+              <span class="saas-workspace-rail-seg is-active">Dual view</span>
+              <span class="saas-workspace-rail-seg">Compare</span>
+              <span class="saas-workspace-rail-seg">Tools</span>
+              <span class="saas-workspace-rail-seg">Export</span>
+            </div>
+          </div>
           <div class="saas-result-preview-card saas-card border-0 saas-card-elevated">
             <div class="saas-result-preview-toolbar d-none d-md-flex">
               <span class="saas-result-preview-hint text-body-secondary small">
@@ -569,7 +612,7 @@
       ></div>
     </main>
 
-    <footer class="app-footer mt-auto">
+    <footer class="app-footer mt-auto" id="about">
       <div class="container">
         <div class="saas-footer-inner py-4 py-md-5">
           <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
@@ -578,9 +621,20 @@
               <span class="fw-semibold">ClearCut</span>
               <span class="text-body-secondary small d-none d-sm-inline">· On-device background removal</span>
             </div>
-            <p class="small text-body-secondary mb-0 text-center text-md-end">
-              Built with Bootstrap 5 · Images never leave your device
-            </p>
+            <div class="d-flex align-items-center gap-3 flex-wrap justify-content-center justify-content-md-end">
+              <button
+                type="button"
+                class="btn btn-saas-theme btn-sm rounded-pill"
+                id="btn-theme-toggle"
+                aria-label="Toggle dark mode"
+                title="Theme"
+              >
+                <i class="bi bi-moon-stars" id="theme-icon" aria-hidden="true"></i>
+              </button>
+              <p class="small text-body-secondary mb-0 text-center text-md-end">
+                Built with Bootstrap 5 · Images never leave your device
+              </p>
+            </div>
           </div>
         </div>
       </div>
