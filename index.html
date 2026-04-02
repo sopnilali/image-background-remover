@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ClearCut — Professional background removal in your browser. Private, batch-ready, no upload to our servers."
+    />
+    <title>ClearCut — Background removal, locally &amp; privately</title>
+  </head>
+  <body class="app-body home-landing">
+    <a class="visually-hidden-focusable position-absolute top-0 start-0 p-2" href="#main-content"
+      >Skip to content</a
+    >
+
+    <header class="app-header">
+      <nav class="navbar navbar-expand-lg navbar-app navbar-saas py-3">
+        <div class="container">
+          <a class="navbar-brand navbar-brand-saas d-flex align-items-center gap-2 fw-semibold" href="/">
+            <span class="brand-mark rounded-3" aria-hidden="true"></span>
+            <span class="brand-text">ClearCut</span>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+              <li class="nav-item">
+                <a class="nav-link fw-semibold px-lg-3" href="#features">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-semibold px-lg-3" href="#privacy-strip">Privacy</a>
+              </li>
+              <li class="nav-item pt-2 pt-lg-0">
+                <a
+                  class="btn btn-primary btn-saas-primary btn-sm px-3"
+                  href="/background-remover/"
+                >
+                  <i class="bi bi-scissors me-1" aria-hidden="true"></i> Background remover
+                </a>
+              </li>
+              <li class="nav-item pt-2 pt-lg-0">
+                <button
+                  type="button"
+                  class="btn btn-saas-theme btn-sm rounded-pill"
+                  id="btn-theme-toggle"
+                  aria-label="Toggle dark mode"
+                  title="Dark mode"
+                >
+                  <i class="bi bi-moon-stars" id="theme-icon" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="container py-4 py-md-5 pb-5 app-main">
+      <section class="saas-hero-section mb-4 mb-lg-5" aria-labelledby="hero-heading">
+        <div class="saas-hero-card">
+          <div class="row g-4 g-xl-5 align-items-center">
+            <div class="col-xl-7">
+              <p class="saas-hero-eyebrow">
+                <span class="saas-hero-eyebrow-dot" aria-hidden="true"></span>
+                <span>SaaS-grade workflow · Runs on your device</span>
+              </p>
+              <h1 id="hero-heading" class="saas-hero-title">
+                Studio-quality cutouts,
+                <span class="saas-hero-title-accent">zero cloud required.</span>
+              </h1>
+              <p class="saas-hero-lead text-body-secondary">
+                ClearCut is a modern background remover: batch processing, live preview, brush refine, and
+                PNG export — all in the browser. Your files never hit our servers.
+              </p>
+              <div class="d-flex flex-wrap align-items-center gap-2 gap-sm-3 mt-4">
+                <a
+                  class="btn btn-primary btn-saas-primary btn-saas-hero-cta px-4"
+                  href="/background-remover/"
+                >
+                  <i class="bi bi-arrow-right-circle me-2" aria-hidden="true"></i> Open background remover
+                </a>
+                <a class="btn btn-saas-ghost saas-hero-secondary" href="#features">
+                  <i class="bi bi-grid-1x2 me-1" aria-hidden="true"></i> Explore features
+                </a>
+              </div>
+              <ul class="saas-hero-trust" aria-label="Product highlights">
+                <li>
+                  <i class="bi bi-cpu-fill saas-hero-trust-icon" aria-hidden="true"></i>
+                  <span><strong>Edge AI</strong><span class="d-none d-sm-inline"> — ONNX in WebAssembly</span></span>
+                </li>
+                <li>
+                  <i class="bi bi-layers-fill saas-hero-trust-icon" aria-hidden="true"></i>
+                  <span><strong>Batch &amp; studio UI</strong><span class="d-none d-sm-inline"> — built for speed</span></span>
+                </li>
+                <li>
+                  <i class="bi bi-shield-check saas-hero-trust-icon" aria-hidden="true"></i>
+                  <span><strong>Privacy-first</strong><span class="d-none d-sm-inline"> — no account needed</span></span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xl-5 d-none d-xl-block">
+              <div class="saas-hero-visual" aria-hidden="true">
+                <div class="saas-hero-visual-glow"></div>
+                <div class="saas-hero-window">
+                  <div class="saas-hero-window-bar">
+                    <span class="saas-hero-window-dot"></span>
+                    <span class="saas-hero-window-dot"></span>
+                    <span class="saas-hero-window-dot"></span>
+                  </div>
+                  <div class="saas-hero-window-body">
+                    <div class="saas-hero-window-side"></div>
+                    <div class="saas-hero-window-main">
+                      <div class="saas-hero-window-card"></div>
+                      <div class="saas-hero-window-card saas-hero-window-card--cutout"></div>
+                    </div>
+                  </div>
+                </div>
+                <p class="saas-hero-visual-caption text-body-secondary small">Same experience in the app</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="privacy-strip" class="mb-5" aria-label="Privacy">
+        <div class="alert saas-alert border-0 py-3 px-4 privacy-notice mb-0 shadow-none" role="status">
+          <i class="bi bi-shield-lock me-2" aria-hidden="true"></i>
+          <strong>Privacy:</strong> Processing stays in your browser. Images are
+          <strong>not uploaded</strong> to ClearCut and are <strong>not stored</strong> on our infrastructure.
+        </div>
+      </section>
+
+      <section id="features" class="mb-5" aria-labelledby="features-heading">
+        <div class="text-center mb-4 mb-lg-5">
+          <p class="text-primary fw-bold text-uppercase small mb-2 saas-home-kicker">Why ClearCut</p>
+          <h2 id="features-heading" class="display-6 fw-bold tracking-tight mb-2">
+            Everything you need for production cutouts
+          </h2>
+          <p class="text-body-secondary mx-auto mb-0" style="max-width: 36rem">
+            One focused tool: remove backgrounds, compare before/after, replace backdrops, and export — without
+            sending pixels to the cloud.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card saas-card border-0 h-100 p-4">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-3 saas-home-feature-icon mb-3">
+                <i class="bi bi-lightning-charge-fill text-primary fs-4" aria-hidden="true"></i>
+              </div>
+              <h3 class="h5 fw-bold mb-2">Fast local inference</h3>
+              <p class="text-body-secondary small mb-0">
+                Models load once, then run on your CPU or GPU via WebAssembly — tuned for responsive previews and
+                batch queues.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card saas-card border-0 h-100 p-4">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-3 saas-home-feature-icon mb-3">
+                <i class="bi bi-palette2 text-primary fs-4" aria-hidden="true"></i>
+              </div>
+              <h3 class="h5 fw-bold mb-2">Studio output</h3>
+              <p class="text-body-secondary small mb-0">
+                Side-by-side review, interactive compare slider, solid or gradient backgrounds, plus erase and
+                restore brushes on the matte.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card saas-card border-0 h-100 p-4">
+              <div class="d-inline-flex align-items-center justify-content-center rounded-3 saas-home-feature-icon mb-3">
+                <i class="bi bi-download text-primary fs-4" aria-hidden="true"></i>
+              </div>
+              <h3 class="h5 fw-bold mb-2">Exports you can ship</h3>
+              <p class="text-body-secondary small mb-0">
+                Download transparent or composited PNGs — HD or compressed — with no watermark from us.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="saas-home-cta card saas-card saas-card-accent border-0 mb-5 overflow-hidden" aria-label="Get started">
+        <div class="card-body p-4 p-md-5 text-center">
+          <h2 class="h4 fw-bold mb-2">Ready to remove backgrounds?</h2>
+          <p class="text-body-secondary mb-4 mx-auto" style="max-width: 28rem">
+            Jump into the app — no signup, no API key. Works offline after the first model load.
+          </p>
+          <a class="btn btn-primary btn-saas-primary btn-lg px-5" href="/background-remover/">
+            <i class="bi bi-scissors me-2" aria-hidden="true"></i> Launch background remover
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer mt-auto">
+      <div class="container">
+        <div class="saas-footer-inner py-4 py-md-5">
+          <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-2">
+              <span class="brand-mark brand-mark--sm rounded-2" aria-hidden="true"></span>
+              <span class="fw-semibold">ClearCut</span>
+              <span class="text-body-secondary small d-none d-sm-inline">· On-device background removal</span>
+            </div>
+            <p class="small text-body-secondary mb-0 text-center text-md-end">
+              <a href="/background-remover/" class="link-secondary text-decoration-none">Background remover</a>
+              · Built with Bootstrap 5
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/home.js"></script>
+  </body>
+</html>
